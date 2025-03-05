@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 8 Марта!</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        h1 {
+            color: #ff4081;
+        }
+        button {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .hearts {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            bottom: 0;
+            animation: floatUp 5s linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>С 8 Марта, Сария!</h1>
+        <p>! Пусть этот день будет наполнен радостью и счастьем!</p>
+        <button onclick="showHearts()">Нажми меня</button>
+    </div>
+    <div class="hearts"></div>
+    <audio id="music" src="love.mp3" loop></audio>
+    <script>
+        function showHearts() {
+            let container = document.querySelector('.hearts');
+            for (let i = 0; i < 30; i++) {
+                let heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = Math.random() > 0.5 ? '❤' : '🌷';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }
+            document.getElementById('music').play();
+        }
+    </script>
+</body>
+</html>
