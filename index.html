@@ -10,10 +10,17 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fbc2eb);
+            background-size: 400% 400%;
             overflow: hidden;
             text-align: center;
             position: relative;
+            animation: gradientBG 10s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .card {
             background: white;
@@ -42,36 +49,58 @@
             cursor: pointer;
             font-size: 16px;
         }
-        .hearts {
+        .hearts, .petals {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
         }
-        .heart {
+        .heart, .petal {
             position: absolute;
-            color: red;
             bottom: 0;
-            animation: floatUp 5s linear infinite;
             opacity: 0;
+        }
+        .heart {
+            color: red;
+            animation: floatUp 5s linear infinite;
+        }
+        .petal {
+            color: pink;
+            font-size: 20px;
+            animation: fallDown 5s linear infinite;
         }
         @keyframes floatUp {
             0% { transform: translateY(0); opacity: 0; }
             20% { opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
         }
+        @keyframes fallDown {
+            0% { transform: translateY(-10vh); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        .response {
+            margin-top: 20px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>С 8 Марта, Сария!</h1>
-        <p>! Пусть этот день будет наполнен радостью и счастьем!</p>
+        <h1>С 8 Марта, моя дорогая!</h1>
+        <p>Ты самая прекрасная и удивительная! Пусть этот день будет наполнен радостью и счастьем!</p>
         <button onclick="showHearts()">Нажми меня</button>
+        <div class="response">
+            <p>Напиши мне что-нибудь ❤️:</p>
+            <input type="text" id="message" placeholder="Твой ответ...">
+            <button onclick="sendMessage()">Отправить</button>
+        </div>
     </div>
     <div class="hearts"></div>
-    <audio id="music" src="love.mp3" loop></audio>
+    <div class="petals"></div>
+    <audio id="music" src="your-music.mp3" loop></audio>
     <script>
         function showHearts() {
             let container = document.querySelector('.hearts');
@@ -86,6 +115,29 @@
                 setTimeout(() => heart.remove(), 5000);
             }
             document.getElementById('music').play();
+            document.querySelector('.response').style.display = 'block';
+        }
+        
+        function createPetals() {
+            let container = document.querySelector('.petals');
+            for (let i = 0; i < 15; i++) {
+                let petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.innerHTML = '🌸';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = Math.random() * 5 + 3 + 's';
+                petal.style.fontSize = Math.random() * 10 + 15 + 'px';
+                container.appendChild(petal);
+                setTimeout(() => petal.remove(), 8000);
+            }
+        }
+        setInterval(createPetals, 2000);
+
+        function sendMessage() {
+            let message = document.getElementById('message').value;
+            if (message) {
+                alert('Твой ответ: ' + message + '\nСпасибо за тёплые слова! ❤️');
+            }
         }
     </script>
 </body>
