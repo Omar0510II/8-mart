@@ -81,18 +81,42 @@
         </div>
     </div>
     <audio id="music" src="love.mp3" loop></audio>
-    <script>
-        function showEffects() {
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCt_dUqnnndVCKGLU-gCBz66KBubXoa5V4",
+            authDomain: "hello-67eb0.firebaseapp.com",
+            databaseURL: "https://hello-67eb0-default-rtdb.firebaseio.com",
+            projectId: "hello-67eb0",
+            storageBucket: "hello-67eb0.firebasestorage.app",
+            messagingSenderId: "69585804407",
+            appId: "1:69585804407:web:abafcd1f08d4cfe1acfa72",
+            measurementId: "G-6M2K1HWCK5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.showEffects = function() {
             document.getElementById('music').play();
             document.querySelector('.response').style.display = 'block';
             createFlowers();
-        }
-        function sendMessage() {
+        };
+
+        window.sendMessage = function() {
             let message = document.getElementById('message').value;
             if (message) {
-                alert('Твой ответ: ' + message + '\nСпасибо за тёплые слова! ❤️');
+                push(ref(database, "messages/"), { text: message })
+                    .then(() => {
+                        alert("Твой ответ сохранён! ❤️");
+                    })
+                    .catch(error => console.error("Ошибка: ", error));
             }
-        }
+        };
+
         function createFlowers() {
             for (let i = 0; i < 15; i++) {
                 let flower = document.createElement('div');
