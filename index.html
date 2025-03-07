@@ -36,13 +36,8 @@
             from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
         }
-        h1 {
-            color: #ff4081;
-        }
-        p {
-            font-size: 18px;
-            color: #333;
-        }
+        h1 { color: #ff4081; }
+        p { font-size: 18px; color: #333; }
         .compliments {
             margin-top: 10px;
             font-style: italic;
@@ -58,9 +53,17 @@
             cursor: pointer;
             font-size: 16px;
         }
-        .response {
-            margin-top: 20px;
-            display: none;
+        .response { margin-top: 20px; display: none; }
+        .flower {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
@@ -70,7 +73,7 @@
         <p>Пусть этот день будет наполнен радостью, счастьем и улыбками!</p>
         <p class="compliments">Ты невероятно красивая, умная и добрая! 💖</p>
         <p class="compliments">Пусть в твоей жизни будет столько же тепла, сколько в твоём сердце! 🌸</p>
-        <button onclick="showHearts()">Нажми меня</button>
+        <button onclick="showEffects()">Нажми меня</button>
         <div class="response">
             <p>Напиши мне что-нибудь ❤️:</p>
             <input type="text" id="message" placeholder="Твой ответ...">
@@ -79,17 +82,26 @@
     </div>
     <audio id="music" src="love.mp3" loop></audio>
     <script>
-        function showHearts() {
+        function showEffects() {
             document.getElementById('music').play();
             document.querySelector('.response').style.display = 'block';
+            createFlowers();
         }
         function sendMessage() {
             let message = document.getElementById('message').value;
             if (message) {
-                let messages = JSON.parse(localStorage.getItem('messages')) || [];
-                messages.push(message);
-                localStorage.setItem('messages', JSON.stringify(messages));
                 alert('Твой ответ: ' + message + '\nСпасибо за тёплые слова! ❤️');
+            }
+        }
+        function createFlowers() {
+            for (let i = 0; i < 15; i++) {
+                let flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.innerHTML = '🌸';
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(flower);
+                setTimeout(() => flower.remove(), 5000);
             }
         }
     </script>
